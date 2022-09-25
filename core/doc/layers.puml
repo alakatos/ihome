@@ -1,0 +1,29 @@
+@startuml
+
+participant "HW Port" as hwport
+participant "HW Board" as hwboard
+participant "Connection\nHandler" as connHandler
+participant "TCS Server" as tcpserver
+participant "SW Board" as swboard
+participant "Port Map" as portmap
+
+group connect
+hwboard -> connHandler: UDP ALIVE + MAC Address
+connHandler -> hwboard: UDP CONNECT
+hwboard -> tcpserver: connect
+tcpserver -> connHandler: boardConnected
+hwboard -> connHandler: StartupPacket\n(Board type + MAC Address)
+connHandler -> swboard **: create
+
+end
+
+hwport -> hwboard: signal
+hwboard -> swboard: data packet
+swboard -> boardSetup: getPortHandler
+swboard -> portHandler: processPacketData
+portHandler -> gadgetMap: findAssociatedGadget
+portHandler -> portHandler: convertToEvent
+
+
+
+@enduml
