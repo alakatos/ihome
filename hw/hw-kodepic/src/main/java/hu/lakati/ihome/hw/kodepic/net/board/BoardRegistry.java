@@ -1,15 +1,20 @@
 package hu.lakati.ihome.hw.kodepic.net.board;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import hu.lakati.ihome.hw.kodepic.net.MacAddress;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import hu.lakati.ihome.hw.common.net.MacAddress;
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.extern.jackson.Jacksonized;
 
+@Builder @Jacksonized
 public class BoardRegistry {
-    private final Map<MacAddress, BoardSetup> registry = new HashMap<>();
+    @JsonProperty("boards")
+    private final Map<MacAddress, BoardAlias> registry;
 
-    public BoardSetup findBoardSetup(@NonNull MacAddress mac) {
+    public BoardAlias findBoardAlias(@NonNull MacAddress mac) {
         return registry.get(mac);
     }
 

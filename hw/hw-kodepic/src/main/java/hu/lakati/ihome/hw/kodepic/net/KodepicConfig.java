@@ -1,10 +1,12 @@
 
 package hu.lakati.ihome.hw.kodepic.net;
 
+import hu.lakati.ihome.hw.kodepic.net.board.BoardRegistry;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.jackson.Jacksonized;
 
-@Builder
+@Jacksonized @Builder
 @Getter
 public class KodepicConfig {
     @Builder.Default
@@ -13,4 +15,5 @@ public class KodepicConfig {
     private final int tcpServerPort = 8888;
     @Builder.Default
     private final int localUdpListenerPort = 8889;
+    private final BoardRegistry boardRegistry;
 }

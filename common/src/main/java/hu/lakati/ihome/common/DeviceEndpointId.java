@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class DeviceEndpointId implements EventSource, CommandTarget {
+public class DeviceEndpointId implements EventSource {
     private final String deviceId;
     private final String endpointId;
 

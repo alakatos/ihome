@@ -1,5 +1,7 @@
 package hu.lakati.ihome.common;
 
-public interface CommandTarget {
+import java.util.function.Consumer;
+
+public interface CommandTarget extends Consumer<Command> {
 
 }

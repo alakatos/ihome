@@ -6,7 +6,9 @@ import hu.lakati.ihome.hw.kodepic.net.BoardFactory;
 import hu.lakati.ihome.hw.kodepic.net.protocol.PacketProtocol;
 
 public class BoardFactoryImpl implements BoardFactory {
-    public Board createBoard(PacketProtocol protocol, EventBroker eventBroker) {
-        return new BoardImpl(protocol, eventBroker);
+
+    @Override
+    public Board createBoard(PacketProtocol protocol, EventBroker eventBroker, BoardAlias alias) {
+        return new BoardImpl(protocol, eventBroker, alias);
     }
 }

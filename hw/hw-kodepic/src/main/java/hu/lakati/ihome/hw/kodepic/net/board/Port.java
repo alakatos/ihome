@@ -14,6 +14,10 @@ public class Port {
         this.portType = portType;
         this.ordinal = ordinal;
         this.id = portType+"_"+ordinal; 
+    }
 
+    @Override
+    public String toString() {
+        return id;
     }
 }

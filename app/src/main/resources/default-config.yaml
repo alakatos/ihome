@@ -1,0 +1,10 @@
+#ihome configuration
+maxConnections: 20
+tcpServerPort: 8888
+localUdpListenerPort: 8889
+
+boardRegistry:
+  boards:
+    "0F-01-02-03-04-05":
+      alias: "myRelay"
+      boardType: "RELAY"

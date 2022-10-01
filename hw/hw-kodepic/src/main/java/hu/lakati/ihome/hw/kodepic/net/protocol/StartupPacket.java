@@ -3,7 +3,7 @@ package hu.lakati.ihome.hw.kodepic.net.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.lakati.ihome.hw.kodepic.net.MacAddress;
+import hu.lakati.ihome.hw.common.net.MacAddress;
 import lombok.Getter;
 import lombok.ToString;
 
