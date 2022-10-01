@@ -16,13 +16,13 @@ public class TCPServer implements Runnable {
 
 	private ServerSocket serverSocket;
 	private boolean shouldStop;
-	private SocketAcceptor socketAcceptor;
+	private SocketHandler socketAcceptor;
 
-	public TCPServer(int port, @NonNull SocketAcceptor socketAcceptor) throws IOException {
+	public TCPServer(int port, @NonNull SocketHandler socketAcceptor) throws IOException {
 		this(port, socketAcceptor, ServerSocketFactory.getDefault());
 	}
 
-	public TCPServer(int port, @NonNull SocketAcceptor socketAcceptor,
+	public TCPServer(int port, @NonNull SocketHandler socketAcceptor,
 			@NonNull ServerSocketFactory serverSocketFactory)
 			throws IOException {
 		this.socketAcceptor = socketAcceptor;
@@ -43,7 +43,7 @@ public class TCPServer implements Runnable {
 		try {
 			while (!shouldStop) {
 				try {
-					socketAcceptor.acceptSocket(serverSocket.accept());
+					socketAcceptor.handleSocket(serverSocket.accept());
 				} catch (SocketTimeoutException e) {
 					// Nothing to do
 					continue;

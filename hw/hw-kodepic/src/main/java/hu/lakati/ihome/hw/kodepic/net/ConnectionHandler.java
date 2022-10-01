@@ -16,8 +16,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.inject.Inject;
+
+import hu.lakati.ihome.common.EventBroker;
 import hu.lakati.ihome.hw.common.net.ProtocolException;
-import hu.lakati.ihome.hw.common.net.SocketAcceptor;
 import hu.lakati.ihome.hw.kodepic.net.protocol.ByteArrayUtil;
 import hu.lakati.ihome.hw.kodepic.net.protocol.ChecksumUtil;
 import hu.lakati.ihome.hw.kodepic.net.protocol.EHomeProtocolException;
@@ -27,7 +29,7 @@ import hu.lakati.ihome.hw.kodepic.net.protocol.StartupPacket;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ConnectionHandler implements Runnable, SocketAcceptor {
+public class ConnectionHandler implements IConnectionHandler {
 
 	private static final String PACKET_TYPE_ALIVE = "ALIVE";
 	private static final String PACKET_TYPE_CONNECT = "CONNECT";
@@ -35,20 +37,31 @@ public class ConnectionHandler implements Runnable, SocketAcceptor {
 	private DatagramSocket listenerSocket;
 	private DatagramSocket senderSocket;
 
+	private final BoardFactory boardFactory;
+	private final EventBroker eventBroker;
+
 	private final int tcpServerPort;
 	private final int localUdpListenerPort;
 
 	private ExecutorService executorService;
 	private boolean shouldStop;
 
-	public ConnectionHandler(int maxConnections, int tcpServerPort, int localUdpListenerPort) throws IOException {
-		this(localUdpListenerPort, tcpServerPort, Executors.newFixedThreadPool(maxConnections));
+	@Inject
+	public ConnectionHandler(KodepicConfig config, BoardFactory boardFactory, EventBroker eventBroker) throws IOException {
+		this(
+			config.getLocalUdpListenerPort(), 
+			config.getTcpServerPort(),
+			boardFactory,
+			eventBroker,
+			Executors.newFixedThreadPool(config.getMaxConnections()));
 	}
 
-	ConnectionHandler(int localUdpListenerPort, int tcpServerPort, ExecutorService executorService) throws IOException {
+	ConnectionHandler(int localUdpListenerPort, int tcpServerPort, BoardFactory boardFactory, EventBroker eventBroker, ExecutorService executorService) throws IOException {
 		this.executorService = executorService;
 		this.tcpServerPort = tcpServerPort;
 		this.localUdpListenerPort = localUdpListenerPort;
+		this.boardFactory = boardFactory;
+		this.eventBroker = eventBroker;
 		startUDP();
 	}
 
@@ -59,7 +72,7 @@ public class ConnectionHandler implements Runnable, SocketAcceptor {
 		senderSocket = new DatagramSocket();
 	}
 
-	public void acceptSocket(Socket socket) throws IOException, ProtocolException {
+	public void handleSocket(Socket socket) throws IOException, ProtocolException {
 		PacketProtocol protocol = new PacketProtocol(socket);
 		boolean threadSpawned = false;
 		try {
@@ -72,7 +85,7 @@ public class ConnectionHandler implements Runnable, SocketAcceptor {
 				clearPendingConnect(startupPacket.getMacAddress());
 				log.info("Board connected: {}", startupPacket);
 				//TODO find board setup based on the content of startupPacket
-				executorService.submit(new Board(protocol));
+				executorService.submit(boardFactory.createBoard(protocol, eventBroker));
 				threadSpawned = true;
 			} else {
 				log.warn("Refusing unexpected board: {}", startupPacket);

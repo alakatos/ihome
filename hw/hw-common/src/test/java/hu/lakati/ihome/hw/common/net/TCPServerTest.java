@@ -30,7 +30,7 @@ public class TCPServerTest {
 	ServerSocket serverSocketMock;
 	
 	@Mock
-	SocketAcceptor socketAcceptorMock;
+	SocketHandler socketAcceptorMock;
 	
 	@Mock
 	private Socket socketMock;
@@ -55,7 +55,7 @@ public class TCPServerTest {
 		});
 
 		tcpServer.run();
-		verify(socketAcceptorMock).acceptSocket(socketMock);
+		verify(socketAcceptorMock).handleSocket(socketMock);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class TCPServerTest {
 
 		tcpServer.run();
 		verify(serverSocketMock, times(maxCalls)).accept();
-		verify(socketAcceptorMock, times(maxCalls-1)).acceptSocket(socketMock);
+		verify(socketAcceptorMock, times(maxCalls-1)).handleSocket(socketMock);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class TCPServerTest {
 
 		tcpServer.run();
 		verify(serverSocketMock, times(maxCalls)).accept();
-		verify(socketAcceptorMock, times(maxCalls-1)).acceptSocket(socketMock);
+		verify(socketAcceptorMock, times(maxCalls-1)).handleSocket(socketMock);
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class TCPServerTest {
 		tcpServer.run();
 		
 		verify(serverSocketMock).accept();
-		verify(socketAcceptorMock, never()).acceptSocket(socketMock);
+		verify(socketAcceptorMock, never()).handleSocket(socketMock);
 	}
 	@After
 	public void tearDown() throws IOException {

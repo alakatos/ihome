@@ -1,0 +1,52 @@
+@startuml
+
+participant "EventSource" as source
+participant "EventBroker" as broker
+participant "EventRouter1\n(thread)" as router
+participant "EventRouter2\n(thread)" as router2
+participant "ComponentMap" as map
+participant switch [
+    =Switch
+    ----
+    ""(Gadget)""
+]
+participant Context as ctx
+participant Storage as store
+participant Area as area
+participant rule [
+    =LampSwitch
+    ----
+    ""(Rule)""
+]
+
+participant lamp [
+    =Lamp
+    ----
+    ""(Gadget)""
+]
+participant "CommandBroker" as commandBroker
+
+
+source --\\ broker ++: offer event (\ndevice+endpoint\n+value)
+return
+broker -> router **: take event, submit
+router -> map ++: lookup Gadget by EventSource
+return Gadget
+router -> switch: handle
+switch -> switch: change state
+switch -> ctx: state changed
+ctx -> store: persist switch state
+ctx -> broker: offer StateChangedEvent
+broker -> router2 **: take event, submit
+router2 -> map: lookup area by Gadget\n(as EventSource)
+router2 -> area: filter ruleset by source
+router2 -> rule: apply StateChanged event
+rule -> lamp: forward StateChanged event
+lamp -> commandBroker: send command (\ndevice+endpoint+\nnew state)
+lamp -> lamp: change lamp state
+lamp -> ctx: state changed
+
+ctx -> store: persist lamp state
+ctx -> broker: offer StateChangedEvent
+
+@enduml

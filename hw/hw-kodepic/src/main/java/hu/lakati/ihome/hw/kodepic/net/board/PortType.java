@@ -1,4 +1,6 @@
-package hu.lakati.ihome.hw.kodepic.net;
+package hu.lakati.ihome.hw.kodepic.net.board;
+
+import hu.lakati.ihome.hw.kodepic.net.IOMode;
 
 /**
  * Always update the tPortTypes type declaration in the file: hu/alvicom/ehome/engine/commonTypes.xsd.include 
@@ -30,13 +32,13 @@ public enum PortType {
             case BINARY_HI:
             case BINARY_LO:
             case DIMMSTATUS:
-                return IOMode.I;
+                return IOMode.Input;
                 
             case DIMMER:
             case RELAY:
             case DA:
             case LAMPPRG:
-                return IOMode.O;
+                return IOMode.Output;
                 
                 
             default:

@@ -1,4 +1,4 @@
-package hu.lakati.ihome.hw.kodepic.net.reg;
+package hu.lakati.ihome.hw.kodepic.net.board;
 
 import java.util.HashMap;
 import java.util.Map;
