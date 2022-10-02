@@ -4,43 +4,25 @@ import java.util.Date;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter
 public class Packet {
-    private PacketType packetType;
-    @Setter(AccessLevel.PACKAGE)
-    private Date createDate;
-
-    protected Packet(PacketType packetType, byte[] data) throws EHomeProtocolException {
-        this.packetType = packetType;
-        parseData(data);
-    }
+    
+    @Getter(AccessLevel.PROTECTED)
+    private final PacketType packetType;
+    @Getter(AccessLevel.PUBLIC)
+    private Date createDate =  new Date();
 
     protected Packet(PacketType packetType, Date createDate) {
         this.packetType = packetType;
         this.createDate = createDate;
     }
 
-    /** Parses the values from the data byte array. Returns the modified offset value. */
-	protected int parseData(byte[] data) throws EHomeProtocolException {
-        
-        PacketType packetType = PacketType.fromData(data);
-        if (this.packetType != null && this.packetType != packetType) {
-            throw new EHomeProtocolException("Data does not belong to packet type " +this.packetType + " but to " + packetType);
+    protected Packet(PacketType packetType, PacketReader packetReader) throws EHomeProtocolException {
+        this(packetType, packetReader.parsePacketDate());
+        if (packetReader.getPacketType() != packetType) {
+            throw new IllegalArgumentException("Incorrect packet parser provided: " + packetReader.getPacketType());
         }
-        this.packetType = packetType;
-
-        //!!! unusable date value (4 bytes) parsing will be skipped
-        // long timestamp = 0;
-        // for (int i=0; i < 4; i++) { 
-        //     long bVal = Byte.toUnsignedInt(data[i+1]); //0th byte was the packetType
-        //     timestamp += bVal << (i*8); 
-        // }
-        // createDate = new Date(timestamp);
-        createDate = new Date();
-		return PacketProtocol.TCP_PACKET_HEADER_LENGTH;
-	}
+    }
 
     	/** Returns the packet in a raw byte array representation. The byte array returned */
 	protected byte[] toByteArray() {

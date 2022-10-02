@@ -2,26 +2,23 @@ package hu.lakati.ihome.hw.kodepic.net.protocol;
 
 public class PacketFactory {
 	public static Packet createPacket(byte[] data) throws EHomeProtocolException {
-		PacketType packetType = PacketType.fromData(data);
-		try {
-			Packet packet = null; 
-			switch (packetType) {
+		PacketReader packetReader = new PacketReader(data);
+		
+		Packet packet = null;
+		switch (packetReader.getPacketType()) {
 			case STARTUP:
-				packet = new StartupPacket(data);
+				packet = new StartupPacket(packetReader);
 				break;
 			case ALIVE:
-				packet = new AlivePacket(data);
+				packet = new AlivePacket(packetReader);
 				break;
 			case DATA:
-				packet = new DataPacket(data);
+				packet = new DataPacket(packetReader);
 				break;
 
-            default:
-				packet = new Packet(packetType, data);
-			}
-			return packet;
-		} catch (IndexOutOfBoundsException e) { //parse error
-			throw new EHomeProtocolException("Packet with incorrect length or subtype index received:" + packetType, e);
+			default:
+				packet = new Packet(packetReader.getPacketType(), packetReader);
 		}
+		return packet;
 	}
 }

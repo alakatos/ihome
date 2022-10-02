@@ -1,7 +1,7 @@
 
-package hu.lakati.ihome.hw.kodepic.net;
+package hu.lakati.ihome.hw.kodepic.config;
 
-import hu.lakati.ihome.hw.kodepic.net.board.BoardRegistry;
+import hu.lakati.ihome.hw.kodepic.device.board.BoardRegistry;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;

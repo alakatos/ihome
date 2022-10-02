@@ -1,11 +1,11 @@
-package hu.lakati.ihome.hw.kodepic.net.board;
+package hu.lakati.ihome.hw.kodepic.device.board;
 
 import java.io.IOException;
 
 import hu.lakati.ihome.common.Command;
 import hu.lakati.ihome.common.Event;
 import hu.lakati.ihome.common.EventBroker;
-import hu.lakati.ihome.hw.kodepic.net.Board;
+import hu.lakati.ihome.hw.kodepic.Board;
 import hu.lakati.ihome.hw.kodepic.net.protocol.PacketProtocol;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class BoardImpl implements Board {
 //TODO read incoming packets and forward them to broker
 			Event event = Event.builder()
 			.timestamp(System.currentTimeMillis())
-			.eventSource(null)
+			.sourceId(null)
 			.build();
 			eventBroker.accept(event);
 		} finally {

@@ -10,4 +10,12 @@
         <artifactId>hw</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>hu.lakati.ihome</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

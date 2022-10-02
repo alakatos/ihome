@@ -21,7 +21,9 @@ import javax.inject.Inject;
 import hu.lakati.ihome.common.EventBroker;
 import hu.lakati.ihome.hw.common.net.MacAddress;
 import hu.lakati.ihome.hw.common.net.ProtocolException;
-import hu.lakati.ihome.hw.kodepic.net.board.BoardRegistry;
+import hu.lakati.ihome.hw.kodepic.BoardFactory;
+import hu.lakati.ihome.hw.kodepic.config.KodepicConfig;
+import hu.lakati.ihome.hw.kodepic.device.board.BoardRegistry;
 import hu.lakati.ihome.hw.kodepic.net.protocol.ByteArrayUtil;
 import hu.lakati.ihome.hw.kodepic.net.protocol.ChecksumUtil;
 import hu.lakati.ihome.hw.kodepic.net.protocol.EHomeProtocolException;
@@ -155,7 +157,7 @@ public class ConnectionHandler implements IConnectionHandler {
 					SocketAddress remoteAddress = packet.getSocketAddress();
 
 					if (isAliveBroadcastPacket(data)) {
-						int clientUdpPort = ByteArrayUtil.parseInt(data, UDP_PACKET_TYPE_ALIVE.length());
+						int clientUdpPort = ByteArrayUtil.parse16bitUint(data, UDP_PACKET_TYPE_ALIVE.length());
 						MacAddress clientMacAddress = new MacAddress(data, UDP_PACKET_TYPE_ALIVE.length() + 2);
 						InetAddress inetAddr = ((InetSocketAddress) remoteAddress).getAddress();
 						SocketAddress targetAddress = new InetSocketAddress(inetAddr, clientUdpPort);

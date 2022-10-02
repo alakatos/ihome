@@ -75,7 +75,7 @@ public class ByteArrayUtil {
   }
 
   /** Parses an unsigned int from the given 2 length byte array */
-  public static int parseInt(byte[] data, int offset) {
+  public static int parse16bitUint(byte[] data, int offset) {
     return Byte.toUnsignedInt(data[offset]) + Byte.toUnsignedInt(data[offset+1]) << 8;
   }
 
@@ -83,7 +83,7 @@ public class ByteArrayUtil {
    * in the given byte array from the specified offset. 
    * The Most Valuable Byte is the rightmost byte, in which the sign bit is the leftmost bit. 
    * @exception IllegalArgumentException if the given length is longer than the byte size of the Java int type */
-  public static int parseInt(byte[] data, int offset, int length, boolean signed) {
+  public static int parseInt(byte[] data, int offset, int length) {
     if (length > Integer.SIZE / 8) {
       throw new IllegalArgumentException("Maximum number of bytes storing Java integers is " + (Integer.SIZE / 8)
           + ". " + length + " was provided.");

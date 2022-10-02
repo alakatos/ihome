@@ -3,14 +3,13 @@ package hu.lakati.ihome.service;
 import java.util.function.Consumer;
 
 import hu.lakati.ihome.common.Event;
-import hu.lakati.ihome.common.EventSource;
 import hu.lakati.ihome.model.Gadget;
 
 public class EventRouter implements Consumer<Event> {
 
     @Override
     public void accept(Event event) {
-        Gadget gadget = findAssociatedGadget(event.getEventSource());
+        Gadget gadget = findAssociatedGadget(event.getSourceId());
         if (gadget.handleEvent(event)) {
 
         }
@@ -19,7 +18,7 @@ public class EventRouter implements Consumer<Event> {
     }
     
 
-    private Gadget findAssociatedGadget(EventSource eventSource) {
+    private Gadget findAssociatedGadget(String eventSourceId) {
         return null;
     }
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 public class Command {
 
     private final long timestamp;
-    private final CommandTarget commandTarget;
+    /** The id of the target given in deviceId@endpointId format */
+    private final String targetId; 
     
 }

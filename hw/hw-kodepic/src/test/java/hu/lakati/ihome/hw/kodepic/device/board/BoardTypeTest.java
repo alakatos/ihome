@@ -1,11 +1,10 @@
-package hu.lakati.ihome.hw.kodepic.net.board;
+package hu.lakati.ihome.hw.kodepic.device.board;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 import org.junit.Test;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.hasSize;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class BoardTypeTest {

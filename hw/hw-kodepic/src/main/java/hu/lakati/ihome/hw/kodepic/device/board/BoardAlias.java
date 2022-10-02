@@ -1,4 +1,4 @@
-package hu.lakati.ihome.hw.kodepic.net.board;
+package hu.lakati.ihome.hw.kodepic.device.board;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

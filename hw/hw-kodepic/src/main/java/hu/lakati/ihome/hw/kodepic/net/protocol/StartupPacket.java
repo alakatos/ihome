@@ -25,12 +25,11 @@ public class StartupPacket extends Packet {
       return (byte) (1 << (this.ordinal() - 1));
     }
 
-    public static List<CauseOfReset> fromCause(byte cause) {
+    public static List<CauseOfReset> fromCause(int cause) {
       List<CauseOfReset> lst = new ArrayList<>();
-      int causeAsInt = Byte.toUnsignedInt(cause);
 
       for (int i = 1, j = 0; i <= 256; i = i * 2, j++) {
-        if ((causeAsInt & i) != 0) {
+        if ((cause & i) != 0) {
           lst.add(values()[j]);
         }
       }
@@ -39,44 +38,27 @@ public class StartupPacket extends Packet {
 
   }
 
-  private List<CauseOfReset> causesOfReset;
-  private MacAddress macAddress;
-  private String boardType;
-  private String boardFirmware;
+  private final List<CauseOfReset> causesOfReset;
+  private final MacAddress macAddress;
+  private final String boardType;
+  private final String boardFirmware;
 
-  protected StartupPacket(byte[] data) throws EHomeProtocolException {
-    super(PacketType.STARTUP, data);
-  }
+  protected StartupPacket(PacketReader packetReader) throws EHomeProtocolException {
+    super(PacketType.STARTUP, packetReader);
 
-  @Override
-  protected int parseData(byte[] data) throws EHomeProtocolException {
+    causesOfReset = CauseOfReset.fromCause(packetReader.parseUintValue(1));
+    macAddress = packetReader.parseMacAddress();
 
-    int offset = super.parseData(data);
+    String boardType = packetReader.readRemainingAsString();
 
-    causesOfReset = CauseOfReset.fromCause(data[offset]);
-    offset++;
-    offset = readMacAddress(data, offset);
-    offset = readBoardTypeInfo(data, offset);
-    return offset;
-  }
-
-  private int readBoardTypeInfo(byte[] data, int offset) {
-    int nameLen = data.length - offset;
-    boardType = new String(data, offset, nameLen);
     int pos = boardType.indexOf(':');
     if (pos > -1) {
-      boardFirmware = boardType.substring(pos + 1);
-      boardType = boardType.substring(0, pos);
+      this.boardFirmware = boardType.substring(pos + 1);
+      this.boardType = boardType.substring(0, pos);
+    } else {
+      this.boardType = boardType;
+      this.boardFirmware = "UNKNOWN";
     }
-    return data.length;
   }
 
-  private int readMacAddress(byte[] data, int offset) throws EHomeProtocolException {
-    try {
-      macAddress = new MacAddress(data, offset);
-    } catch (IllegalArgumentException e) {
-      throw new EHomeProtocolException("Can't parse MAC address - " + e);
-    }
-    return  MacAddress.MAC_ADDRESS_LENGTH;
-  }
 }

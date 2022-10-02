@@ -1,15 +1,11 @@
 package hu.lakati.ihome.common;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
+@SuperBuilder
 public class Event {
     private final long timestamp;
-    private final EventSource eventSource;
-    @Setter
-    private boolean stopPropagation;
-
+    private final String sourceId;
 }

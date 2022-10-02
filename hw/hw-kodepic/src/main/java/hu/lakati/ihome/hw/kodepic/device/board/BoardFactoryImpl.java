@@ -1,8 +1,8 @@
-package hu.lakati.ihome.hw.kodepic.net.board;
+package hu.lakati.ihome.hw.kodepic.device.board;
 
 import hu.lakati.ihome.common.EventBroker;
-import hu.lakati.ihome.hw.kodepic.net.Board;
-import hu.lakati.ihome.hw.kodepic.net.BoardFactory;
+import hu.lakati.ihome.hw.kodepic.Board;
+import hu.lakati.ihome.hw.kodepic.BoardFactory;
 import hu.lakati.ihome.hw.kodepic.net.protocol.PacketProtocol;
 
 public class BoardFactoryImpl implements BoardFactory {

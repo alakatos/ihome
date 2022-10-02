@@ -1,4 +1,4 @@
-package hu.lakati.ihome.hw.kodepic.net.board;
+package hu.lakati.ihome.hw.kodepic.device.board;
 
 
 import java.util.ArrayList;
@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import hu.lakati.ihome.hw.kodepic.net.protocol.PortType;
 
 /**
  * Represents a panel with hw input and/or output ports. 

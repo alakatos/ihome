@@ -1,19 +1,24 @@
 package hu.lakati.ihome.hw.kodepic.net.protocol;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PacketTest {
+    @Mock
+    PacketReader packetReaderMock;
+    
     @Test
     public void testParse() throws EHomeProtocolException {
-        byte[] data = ByteArrayUtil.parseHexString("030000000f");
-        Packet packet = new AlivePacket(data);
-        System.out.println(packet.getCreateDate().getTime());
-        System.out.println(new Date().getTime());
-        System.out.println(Long.valueOf(new Date().getTime()).intValue());
-        Date what = new Date(Long.valueOf(new Date().getTime()).intValue());
-        System.out.println(new SimpleDateFormat("yyyy.MM.dd HH:mm:SS").format(what));
+        
+        when(packetReaderMock.getPacketType()).thenReturn(PacketType.ALIVE);
+        new AlivePacket(packetReaderMock);
+
+        verify(packetReaderMock).parsePacketDate();
     }
 }

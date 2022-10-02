@@ -1,5 +1,6 @@
-package hu.lakati.ihome.hw.kodepic.net.board;
+package hu.lakati.ihome.hw.kodepic.device.board;
 
+import hu.lakati.ihome.hw.kodepic.net.protocol.PortType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

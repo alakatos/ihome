@@ -1,11 +1,12 @@
 package hu.lakati.ihome.model;
 
-import lombok.AllArgsConstructor;
+import hu.lakati.ihome.common.Event;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@AllArgsConstructor
-public class StateChangedEvent {
+@SuperBuilder
+public class StateChangedEvent extends Event {
     private final long timestamp;
     private Gadget gadget;
     private final State newState;

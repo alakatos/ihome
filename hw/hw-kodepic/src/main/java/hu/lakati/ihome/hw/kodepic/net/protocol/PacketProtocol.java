@@ -68,7 +68,7 @@ public class PacketProtocol {
                                                  // invalid, the stream will to be reset to this position
     byte[] header = readData(TCP_PACKET_HEADER_LENGTH);
     if (ChecksumUtil.isChecksumOK(header)) { // header checksum
-      int dataLength = ByteArrayUtil.parseInt(header, 0);
+      int dataLength = ByteArrayUtil.parse16bitUint(header, 0);
       if (dataLength >= TCP_PACKET_HEADER_LENGTH && dataLength <= TCP_PACKET_MAX_LENGTH) {
         return dataLength;
       }

@@ -6,8 +6,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import hu.lakati.ihome.hw.common.net.TCPServer;
+import hu.lakati.ihome.hw.kodepic.config.KodepicConfig;
 import hu.lakati.ihome.hw.kodepic.net.ConnectionHandler;
-import hu.lakati.ihome.hw.kodepic.net.KodepicConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

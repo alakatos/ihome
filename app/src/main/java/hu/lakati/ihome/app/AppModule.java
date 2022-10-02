@@ -11,11 +11,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
 import hu.lakati.ihome.common.EventBroker;
-import hu.lakati.ihome.hw.kodepic.net.BoardFactory;
+import hu.lakati.ihome.hw.kodepic.BoardFactory;
+import hu.lakati.ihome.hw.kodepic.config.KodepicConfig;
+import hu.lakati.ihome.hw.kodepic.device.board.BoardFactoryImpl;
 import hu.lakati.ihome.hw.kodepic.net.ConnectionHandler;
 import hu.lakati.ihome.hw.kodepic.net.IConnectionHandler;
-import hu.lakati.ihome.hw.kodepic.net.KodepicConfig;
-import hu.lakati.ihome.hw.kodepic.net.board.BoardFactoryImpl;
 import hu.lakati.ihome.service.EventBrokerImpl;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package hu.lakati.ihome.hw.kodepic.net;
+package hu.lakati.ihome.hw.kodepic.config;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -14,9 +14,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 
 import hu.lakati.ihome.hw.common.net.MacAddress;
-import hu.lakati.ihome.hw.kodepic.net.board.BoardAlias;
-import hu.lakati.ihome.hw.kodepic.net.board.BoardRegistry;
-import hu.lakati.ihome.hw.kodepic.net.board.BoardType;
+import hu.lakati.ihome.hw.kodepic.device.board.BoardAlias;
+import hu.lakati.ihome.hw.kodepic.device.board.BoardRegistry;
+import hu.lakati.ihome.hw.kodepic.device.board.BoardType;
 
 public class KodepicConfigTest {
     @Test
