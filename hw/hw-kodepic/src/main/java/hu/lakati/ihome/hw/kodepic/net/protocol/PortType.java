@@ -1,5 +1,7 @@
 package hu.lakati.ihome.hw.kodepic.net.protocol;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import hu.lakati.ihome.hw.kodepic.net.IOMode;
 import lombok.Getter;
 
@@ -66,5 +68,10 @@ public enum PortType {
             default:
                 throw new IllegalStateException("I/O mode of " + this + " is not registered");
         }
+    }
+
+    @JsonValue
+    public String getName() {
+        return name();
     }
 }

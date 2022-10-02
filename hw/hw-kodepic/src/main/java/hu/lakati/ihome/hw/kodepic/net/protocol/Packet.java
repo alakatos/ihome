@@ -2,14 +2,14 @@ package hu.lakati.ihome.hw.kodepic.net.protocol;
 
 import java.util.Date;
 
-import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@ToString
 public class Packet {
     
-    @Getter(AccessLevel.PROTECTED)
     private final PacketType packetType;
-    @Getter(AccessLevel.PUBLIC)
     private Date createDate =  new Date();
 
     protected Packet(PacketType packetType, Date createDate) {

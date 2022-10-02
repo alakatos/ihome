@@ -1,14 +1,11 @@
 package hu.lakati.ihome.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.util.Date;
 
-@AllArgsConstructor
-@Getter
-public class Command {
+public interface Command {
 
-    private final long timestamp;
-    /** The id of the target given in deviceId@endpointId format */
-    private final String targetId; 
+    Date getCreateDate();
+    /** The id of the target given in endpointId@deviceId format */
+    String getTargetId(); 
     
 }

@@ -132,4 +132,8 @@ public class PacketProtocol {
       return new Date(System.currentTimeMillis()+timeDiff);
     }
   }
+
+  public boolean isSocketClosed() {
+    return socket.isClosed();
+  }
 }

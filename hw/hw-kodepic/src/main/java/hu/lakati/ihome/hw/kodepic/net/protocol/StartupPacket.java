@@ -46,7 +46,7 @@ public class StartupPacket extends Packet {
   protected StartupPacket(PacketReader packetReader) throws EHomeProtocolException {
     super(PacketType.STARTUP, packetReader);
 
-    causesOfReset = CauseOfReset.fromCause(packetReader.parseUintValue(1));
+    causesOfReset = CauseOfReset.fromCause(packetReader.parseIntValue(1));
     macAddress = packetReader.parseMacAddress();
 
     String boardType = packetReader.readRemainingAsString();

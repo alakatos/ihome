@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
+import hu.lakati.ihome.common.DeviceListener;
 import hu.lakati.ihome.common.EventBroker;
 import hu.lakati.ihome.hw.common.net.MacAddress;
 import hu.lakati.ihome.hw.common.net.ProtocolException;
@@ -51,9 +52,10 @@ public class ConnectionHandler implements IConnectionHandler {
 	private ExecutorService executorService;
 	private boolean shouldStop;
 	private final BoardRegistry boardRegistry;
+	private final DeviceListener deviceListener;
 
 	@Inject
-	public ConnectionHandler(KodepicConfig config, BoardFactory boardFactory, EventBroker eventBroker)
+	public ConnectionHandler(KodepicConfig config, BoardFactory boardFactory, EventBroker eventBroker, DeviceListener deviceListener)
 			throws IOException {
 		this(
 				config.getLocalUdpListenerPort(),
@@ -61,16 +63,18 @@ public class ConnectionHandler implements IConnectionHandler {
 				boardFactory,
 				eventBroker,
 				config.getBoardRegistry(),
+				deviceListener,
 				Executors.newFixedThreadPool(config.getMaxConnections()));
 	}
 
 	ConnectionHandler(int localUdpListenerPort, int tcpServerPort, BoardFactory boardFactory, EventBroker eventBroker,
-			BoardRegistry boardRegistry, ExecutorService executorService) throws IOException {
+			BoardRegistry boardRegistry, DeviceListener deviceListener, ExecutorService executorService) throws IOException {
 		this.executorService = executorService;
 		this.tcpServerPort = tcpServerPort;
 		this.localUdpListenerPort = localUdpListenerPort;
 		this.boardFactory = boardFactory;
 		this.eventBroker = eventBroker;
+		this.deviceListener = deviceListener;
 		this.boardRegistry = boardRegistry;
 		startUDP();
 	}
@@ -94,7 +98,7 @@ public class ConnectionHandler implements IConnectionHandler {
 			if (isConnectSent(startupPacket.getMacAddress())) {
 				clearPendingConnect(startupPacket.getMacAddress());
 				log.info("Board connected: {}", startupPacket);
-				executorService.submit(boardFactory.createBoard(protocol, eventBroker, boardRegistry.findBoardAlias(startupPacket.getMacAddress())));
+				executorService.submit(boardFactory.createBoard(protocol, eventBroker, deviceListener, boardRegistry.findBoardAlias(startupPacket.getMacAddress())));
 				threadSpawned = true;
 			} else {
 				log.warn("Refusing unexpected board: {}", startupPacket);

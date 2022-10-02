@@ -6,7 +6,7 @@ import java.util.Date;
 import hu.lakati.ihome.hw.common.net.MacAddress;
 import lombok.Getter;
 
-public class PacketReader {
+class PacketReader {
     private static final int DATA_LENGTH_PACKET_TYPE = 1;
     private static final int DATA_LENGTH_PACKET_DATE = 4;
     private static final int DATA_LENGTH_PORT_TYPE = 2;
@@ -33,7 +33,7 @@ public class PacketReader {
         }
     }
 
-    public PacketReader(byte[] data) throws EHomeProtocolException {
+    PacketReader(byte[] data) throws EHomeProtocolException {
         this.data = data;
         packetType = parsePacketType();
     }
@@ -49,9 +49,11 @@ public class PacketReader {
         }
     }
 
-    public Date parsePacketDate() throws EHomeProtocolException {
+    Date parsePacketDate() throws EHomeProtocolException {
         try (ValidatingOffset offsetValidator = new ValidatingOffset(DATA_LENGTH_PACKET_DATE)) {
 
+            int dateValue = parseIntValue(DATA_LENGTH_PACKET_DATE);
+            long longValue = dateValue < 0 ? -1*dateValue : dateValue;
             // !!! unusable date value (4 bytes) parsing will be skipped
             // long timestamp = 0;
             // for (int i=0; i < 4; i++) {
@@ -59,11 +61,11 @@ public class PacketReader {
             // timestamp += bVal << (i*8);
             // }
             // createDate = new Date(timestamp);
-            return new Date();
+            return new Date(longValue);
         }
     }
 
-    public PortType parsePortType() throws EHomeProtocolException {
+    PortType parsePortType() throws EHomeProtocolException {
         try (ValidatingOffset offsetValidator = new ValidatingOffset(DATA_LENGTH_PORT_TYPE)) {
             int portTypeId = Byte.toUnsignedInt(data[offset]);
             return PortType.getById(portTypeId);
@@ -72,7 +74,7 @@ public class PacketReader {
         }
     }
 
-    public int parseUintValue(int valueLength) throws EHomeProtocolException {
+    int parseIntValue(int valueLength) throws EHomeProtocolException {
         try (ValidatingOffset offsetValidator = new ValidatingOffset(valueLength)) {
             switch (valueLength) {
                 case 1:
@@ -85,13 +87,13 @@ public class PacketReader {
         }
     }
 
-    public MacAddress parseMacAddress() throws EHomeProtocolException {
+    MacAddress parseMacAddress() throws EHomeProtocolException {
         try (ValidatingOffset offsetValidator = new ValidatingOffset(MacAddress.MAC_ADDRESS_LENGTH)) {
             return new MacAddress(data, offset);
         }
     }
 
-    public String readRemainingAsString() throws EHomeProtocolException {
+    String readRemainingAsString() throws EHomeProtocolException {
         try (ValidatingOffset offsetValidator = new ValidatingOffset(data.length - offset)) {
             return new String(data, offset, data.length - offset);
         }
