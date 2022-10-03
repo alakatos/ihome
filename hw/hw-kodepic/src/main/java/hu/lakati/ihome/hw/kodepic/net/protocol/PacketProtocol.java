@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Date;
 
+import lombok.Setter;
+
 public class PacketProtocol {
 
   private static final int PACKET_START_BYTE = 0xAA;
@@ -19,6 +21,7 @@ public class PacketProtocol {
   static final int TCP_PACKET_MAX_LENGTH = 8192;
 
   private final Socket socket;
+  @Setter
   private Long timeDiff;
 
   private OutputStream out;
@@ -38,7 +41,6 @@ public class PacketProtocol {
     }
   }
   
-
   public Packet readPacket() throws EHomeProtocolException, IOException {
     int dataLength;
     do {
@@ -49,7 +51,14 @@ public class PacketProtocol {
       throw new EHomeProtocolException("Packet length too short: " + dataLength);
     }
 
-    return PacketFactory.createPacket(readData(dataLength));
+    PacketReader packetReader = new PacketReader(readData(dataLength), timeDiff);
+    Packet packet = PacketFactory.createPacket(packetReader);
+    if (timeDiff == 0) {
+      Date now = new Date();
+      timeDiff = now.getTime() - packet.getCreateDate().getTime();
+      packet.setCreateDate(now);
+    }
+    return packet;
   }
 
   private void findPossiblePacketStart() throws IOException, EHomeProtocolException {
@@ -113,7 +122,10 @@ public class PacketProtocol {
   }
 
   public void writePacket(Packet packet) throws IOException {
-    byte[] packData = packet.toByteArray();
+    PacketWriter writer = new PacketWriter(timeDiff);
+    packet.write(writer);
+
+    byte[] packData = writer.getData();
     byte[] header = new byte[3];
     ByteArrayUtil.intToByteArray(packData.length, header, 0);
     header[2] = ChecksumUtil.countChecksum(header, 2);

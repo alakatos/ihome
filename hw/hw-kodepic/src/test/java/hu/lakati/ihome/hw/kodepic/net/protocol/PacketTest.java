@@ -16,9 +16,9 @@ public class PacketTest {
     @Test
     public void testParse() throws EHomeProtocolException {
         
-        when(packetReaderMock.getPacketType()).thenReturn(PacketType.ALIVE);
+        when(packetReaderMock.readPacketType()).thenReturn(PacketType.ALIVE);
         new AlivePacket(packetReaderMock);
 
-        verify(packetReaderMock).parsePacketDate();
+        verify(packetReaderMock).readDate();
     }
 }

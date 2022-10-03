@@ -9,16 +9,16 @@ public class MacAddress {
 
   private static char[] hexChars = "0123456789ABCDEF".toCharArray();
 
-  public static final int MAC_ADDRESS_LENGTH = 6;
-  private byte[] addressBytes = new byte[MAC_ADDRESS_LENGTH];
+  public static final int MAC_ADDRESS_SIZE_IN_BYTES = 6;
+  private byte[] addressBytes = new byte[MAC_ADDRESS_SIZE_IN_BYTES];
 
   public MacAddress(byte[] macAddressBytes) {
     this(macAddressBytes, 0);
   }
 
   public MacAddress(byte[] macAddressBytes, int offs) {
-    if (macAddressBytes.length - offs < MAC_ADDRESS_LENGTH) {
-      throw new IllegalArgumentException("MAC addressBytes is expected to be a " + MAC_ADDRESS_LENGTH
+    if (macAddressBytes.length - offs < MAC_ADDRESS_SIZE_IN_BYTES) {
+      throw new IllegalArgumentException("MAC addressBytes is expected to be a " + MAC_ADDRESS_SIZE_IN_BYTES
           + " length byte array");
     }
     System.arraycopy(macAddressBytes, offs, addressBytes, 0, addressBytes.length);

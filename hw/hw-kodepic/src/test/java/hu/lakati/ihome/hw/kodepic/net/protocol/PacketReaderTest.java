@@ -14,16 +14,16 @@ public class PacketReaderTest {
 
     @Test
     public void testGetPacketType() throws NumberFormatException, EHomeProtocolException {
-        PacketReader reader = new PacketReader(ByteArrayUtil.parseHexString("0301000000"));
-        assertThat(reader.getPacketType(), equalTo(PacketType.ALIVE));
-        assertThat(reader.parsePacketDate(), equalTo(new Date(1)));
+        PacketReader reader = new PacketReader(ByteArrayUtil.parseHexString("0301000000"), 0);
+        assertThat(reader.readPacketType(), equalTo(PacketType.ALIVE));
+        assertThat(reader.readDate(), equalTo(new Date(1)));
     }
 
     @Test
     public void testParseMacAddress() throws NumberFormatException, EHomeProtocolException {
-        PacketReader reader = new PacketReader(ByteArrayUtil.parseHexString("020A0B0C0D0E0F"));
-        assertThat(reader.getPacketType(), equalTo(PacketType.STARTUP));
-        assertThat(reader.parseMacAddress(), equalTo(new MacAddress("0A-0B-0C-0D-0E-0F")));
+        PacketReader reader = new PacketReader(ByteArrayUtil.parseHexString("020A0B0C0D0E0F"), 0);
+        assertThat(reader.readPacketType(), equalTo(PacketType.STARTUP));
+        assertThat(reader.readMacAddress(), equalTo(new MacAddress("0A-0B-0C-0D-0E-0F")));
     }
 
     @Test

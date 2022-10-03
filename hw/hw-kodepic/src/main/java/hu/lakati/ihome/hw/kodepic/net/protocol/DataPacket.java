@@ -6,9 +6,10 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class DataPacket extends Packet{
+public class DataPacket extends Packet {
 
     private static final int DATA_LENGTH_PORT_ORDINAL = 1;
+    private static final int DATA_LENGTH_PORT_TYPE = 2;
 
     private final Port port;
     private final int value;
@@ -17,11 +18,22 @@ public class DataPacket extends Packet{
 
         super(PacketType.DATA, packetReader);
 
-        PortType portType = packetReader.parsePortType();
-        int portNumber = packetReader.parseIntValue(DATA_LENGTH_PORT_ORDINAL);
+        PortType portType = readPortType(packetReader);
+        int portNumber = packetReader.readIntValue(DATA_LENGTH_PORT_ORDINAL);
         port = new Port(portType, portNumber);
         
-        value = packetReader.parseIntValue(portType.getValueLength());
+        value = packetReader.readIntValue(portType.getValueLength());
     }
+    
+    
+    private PortType readPortType(PacketReader packetReader) throws EHomeProtocolException {
+        int portTypeId = packetReader.readIntValue(DATA_LENGTH_PORT_TYPE);
+        try {
+            return PortType.getById(portTypeId);
+        } catch (IllegalArgumentException e) {
+            throw new EHomeProtocolException(e.getMessage());
+        }
+    }
+
 
 }

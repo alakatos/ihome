@@ -10,9 +10,11 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
+import hu.lakati.ihome.common.DeviceListener;
 import hu.lakati.ihome.common.EventBroker;
 import hu.lakati.ihome.hw.kodepic.BoardFactory;
 import hu.lakati.ihome.hw.kodepic.config.KodepicConfig;
+import hu.lakati.ihome.hw.kodepic.device.adapter.DeviceListenerImpl;
 import hu.lakati.ihome.hw.kodepic.device.board.BoardFactoryImpl;
 import hu.lakati.ihome.hw.kodepic.net.ConnectionHandler;
 import hu.lakati.ihome.hw.kodepic.net.IConnectionHandler;
@@ -25,6 +27,7 @@ public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(EventBroker.class).toInstance(new EventBrokerImpl());
+        bind(DeviceListener.class).to(DeviceListenerImpl.class);
         bind(BoardFactory.class).to(BoardFactoryImpl.class);
         bind(KodepicConfig.class).toInstance(readConfig());
         bind(IConnectionHandler.class).to(ConnectionHandler.class).in(Scopes.SINGLETON);
@@ -33,7 +36,7 @@ public class AppModule extends AbstractModule {
     private KodepicConfig readConfig() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try {
-            return mapper.readValue(getConfigReader(), KodepicConfig.class);
+            return mapper.readValue(createConfigReader(), KodepicConfig.class);
         } catch (FileNotFoundException  e) {
             throw new IllegalArgumentException("Config file not found", e);
         } catch (Exception e) {
@@ -41,7 +44,7 @@ public class AppModule extends AbstractModule {
         }
     }
 
-    Reader getConfigReader() throws FileNotFoundException {
+    private Reader createConfigReader() throws FileNotFoundException {
         String configFile = System.getProperty("configFile");
         if (configFile != null) {
             log.info("Reading config from file {}", configFile);

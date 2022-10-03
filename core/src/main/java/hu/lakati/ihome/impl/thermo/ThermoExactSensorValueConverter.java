@@ -14,17 +14,17 @@ import lombok.extern.jackson.Jacksonized;
 
 @Jacksonized @Builder
 @JsonIgnoreProperties
-public class ThermoSensorValueConverter implements ValueConverter<Integer, Double> {
+public class ThermoExactSensorValueConverter implements ValueConverter<Double, Double> {
 
     @AllArgsConstructor
     @Getter
     private static class TempConversionEntry implements Comparable<TempConversionEntry> {
-        int sensorAdValue;
+        double sensorAdValue;
         double temperatureCelsius;
 
         @Override
         public int compareTo(TempConversionEntry o) {
-            return Integer.compare(sensorAdValue, o.sensorAdValue);
+            return Double.compare(sensorAdValue, o.sensorAdValue);
         }
     }
 
@@ -87,7 +87,7 @@ public class ThermoSensorValueConverter implements ValueConverter<Integer, Doubl
     }
 
     @Override
-    public Double convert(Integer sensorValue) {
+    public Double convert(Double sensorValue) {
         int idx = Arrays.binarySearch(sortedConversionEntries, new TempConversionEntry(sensorValue, 0));
         if (idx >= 0) {
             return sortedConversionEntries[idx].temperatureCelsius;

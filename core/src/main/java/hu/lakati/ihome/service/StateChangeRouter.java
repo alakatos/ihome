@@ -2,8 +2,6 @@ package hu.lakati.ihome.service;
 
 import java.util.function.Consumer;
 
-import hu.lakati.ihome.common.Event;
-import hu.lakati.ihome.model.Gadget;
 import hu.lakati.ihome.model.StateChangeListener;
 import hu.lakati.ihome.model.StateChangedEvent;
 

@@ -1,11 +1,11 @@
 package hu.lakati.ihome.hw.kodepic.net.protocol;
 
 public class PacketFactory {
-	public static Packet createPacket(byte[] data) throws EHomeProtocolException {
-		PacketReader packetReader = new PacketReader(data);
+	public static Packet createPacket(PacketReader packetReader) throws EHomeProtocolException {
 		
 		Packet packet = null;
-		switch (packetReader.getPacketType()) {
+		PacketType packetType =  packetReader.readPacketType();
+		switch (packetType) {
 			case STARTUP:
 				packet = new StartupPacket(packetReader);
 				break;
@@ -17,7 +17,7 @@ public class PacketFactory {
 				break;
 
 			default:
-				packet = new Packet(packetReader.getPacketType(), packetReader);
+				packet = new Packet(packetType, packetReader);
 		}
 		return packet;
 	}

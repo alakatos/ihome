@@ -4,7 +4,7 @@ import static java.util.Arrays.asList;
 
 import org.junit.Test;
 
-import hu.lakati.ihome.impl.thermo.ThermoSensorValueConverter;
+import hu.lakati.ihome.impl.thermo.ThermoExactSensorValueConverter;
 import hu.lakati.ihome.impl.thermo.Thermometer;
 
 
@@ -23,7 +23,7 @@ public class AreaTest {
             asList(
                 new Area("Nappali",
                     asList(
-                        new Thermometer("Hőmérő", "AD_1@myRelay", 0.5, ThermoSensorValueConverter.builder().build())
+                        new Thermometer("Hőmérő", "AD_1@myRelay", 0.5, ThermoExactSensorValueConverter.builder().build())
                     )
                 , null)
             )

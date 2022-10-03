@@ -3,6 +3,7 @@ package hu.lakati.ihome.hw.kodepic.net.protocol;
 import java.util.Date;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -10,6 +11,7 @@ import lombok.ToString;
 public class Packet {
     
     private final PacketType packetType;
+    @Setter
     private Date createDate =  new Date();
 
     protected Packet(PacketType packetType, Date createDate) {
@@ -18,21 +20,12 @@ public class Packet {
     }
 
     protected Packet(PacketType packetType, PacketReader packetReader) throws EHomeProtocolException {
-        this(packetType, packetReader.parsePacketDate());
-        if (packetReader.getPacketType() != packetType) {
-            throw new IllegalArgumentException("Incorrect packet parser provided: " + packetReader.getPacketType());
-        }
+        this(packetType, packetReader.readDate());
     }
 
     	/** Returns the packet in a raw byte array representation. The byte array returned */
-	protected byte[] toByteArray() {
-		
-		byte[] arr = new byte[PacketProtocol.TCP_PACKET_HEADER_LENGTH];
-		arr[0] = (byte) (packetType.ordinal()-1);
-		long tst = createDate.getTime();
-        for (int i=0; i < 4; i++) {
-            arr[i+1] = (byte) ((tst >> (i*8)) & 0xff);
-        }
-		return arr;
+	protected void write(PacketWriter writer) {
+        writer.writePacketType(packetType);
+        writer.writeDate(createDate);
 	}
 }

@@ -34,12 +34,12 @@ public class Thermometer implements Gadget {
     private double granularity = 0.2;
 
     @JsonProperty
-    private final ValueConverter<Integer, Double> thermoValueConverter;
+    private final ValueConverter<Double, Double> thermoValueConverter;
     
 
     @Jacksonized @Builder
     public Thermometer(String name, @NonNull String thermoSensorId, double granularity,
-            ValueConverter<Integer, Double> thermoValueConverter) {
+            ValueConverter<Double, Double> thermoValueConverter) {
         this.name = name;
         this.thermoSensorId = thermoSensorId;
         this.granularity = granularity < 0.2 ? 0.2 : granularity;

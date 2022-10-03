@@ -6,5 +6,5 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class DataEvent extends BaseEvent {
-    private final int value;
+    private final double value;
 }

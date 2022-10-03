@@ -9,11 +9,11 @@ import org.junit.Test;
 public class ThermoSensorValueConverterTest {
     @Test
     public void testConvert() {
-        ThermoSensorValueConverter converter = new ThermoSensorValueConverter();
-        double tempCelsius = converter.convert(2000);
-        assertThat(2000, lessThan(ThermoSensorValueConverter.conversionValues[25][0]));
-        assertThat(2000, greaterThan(ThermoSensorValueConverter.conversionValues[24][0]));
-        assertThat(tempCelsius, greaterThan((double)ThermoSensorValueConverter.conversionValues[25][1]));
-        assertThat(tempCelsius, lessThan((double)ThermoSensorValueConverter.conversionValues[24][1]));
+        ThermoExactSensorValueConverter converter = new ThermoExactSensorValueConverter();
+        double tempCelsius = converter.convert(2000d);
+        assertThat(2000, lessThan(ThermoExactSensorValueConverter.conversionValues[25][0]));
+        assertThat(2000, greaterThan(ThermoExactSensorValueConverter.conversionValues[24][0]));
+        assertThat(tempCelsius, greaterThan((double)ThermoExactSensorValueConverter.conversionValues[25][1]));
+        assertThat(tempCelsius, lessThan((double)ThermoExactSensorValueConverter.conversionValues[24][1]));
     }
 }

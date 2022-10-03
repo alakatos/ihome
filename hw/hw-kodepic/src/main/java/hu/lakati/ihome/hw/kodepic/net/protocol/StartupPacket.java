@@ -46,8 +46,8 @@ public class StartupPacket extends Packet {
   protected StartupPacket(PacketReader packetReader) throws EHomeProtocolException {
     super(PacketType.STARTUP, packetReader);
 
-    causesOfReset = CauseOfReset.fromCause(packetReader.parseIntValue(1));
-    macAddress = packetReader.parseMacAddress();
+    causesOfReset = CauseOfReset.fromCause(packetReader.readIntValue(1));
+    macAddress = packetReader.readMacAddress();
 
     String boardType = packetReader.readRemainingAsString();
 
@@ -60,5 +60,7 @@ public class StartupPacket extends Packet {
       this.boardFirmware = "UNKNOWN";
     }
   }
+
+  
 
 }
